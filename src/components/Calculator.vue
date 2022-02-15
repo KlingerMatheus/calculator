@@ -1,7 +1,9 @@
 <template>
   <div id="container">
-    <span class="meteoro"></span>
-    <span class="meteoro-dois"></span>
+    <div class="meteoro-animation">
+      <span class="meteoro"></span>
+      <span class="meteoro-dois"></span>
+    </div>
     <div id="calculator">
       <Led :calculatorIsActive="this.calculatorIsActive" />
 
@@ -214,10 +216,6 @@ export default {
 </script>
 
 <style>
-body {
-  overflow: hidden;
-}
-
 /* CONTAINER */
 
 #container {
@@ -225,7 +223,6 @@ body {
   align-items: center;
   flex-direction: column;
   user-select: none;
-  overflow: hidden;
 }
 
 /* CALCULATOR */
@@ -288,6 +285,15 @@ body {
 
 /* METEORO */
 
+.meteoro-animation {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 .meteoro,
 .meteoro-dois {
   position: absolute;
@@ -296,7 +302,7 @@ body {
   background-repeat: no-repeat;
   width: 500px;
   height: 500px;
-  filter: brightness(1.6);
+  filter: brightness(1.6) blur(2px);
   z-index: 0;
 }
 
@@ -393,22 +399,23 @@ body {
 @media screen and (max-width: 600px) {
   #calculator {
     margin-top: -50px;
-    transform: scale(0.7);
+    transform: scale(0.8);
   }
 
   #calculator:hover {
-    transform: translateY(-10px) scale(0.7);
+    transform: translateY(-10px) scale(0.8);
   }
 
   #notification {
     font-size: 11px;
+    margin-top: -50px;
   }
 }
 
 @media screen and (max-width: 768px) {
   #notification {
     position: static;
-    margin-top: -15px;
+    margin-top: -60px;
     margin-bottom: 10px;
   }
 }

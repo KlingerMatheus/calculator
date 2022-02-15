@@ -31,7 +31,6 @@ export default {
 
 #app {
   font-family: "Roboto", sans-serif;
-  overflow: hidden;
 }
 
 #background {
