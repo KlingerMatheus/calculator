@@ -34,14 +34,16 @@ export default {
 }
 
 #background {
-  position: fixed;
+  position: absolute;
   left: 50%;
   width: 100%;
   height: 100%;
   z-index: -1;
   transform: translateX(-50%);
+  background-color: #020126;
   background-image: url("./assets/background.jpg");
-  background-size: 1920px;
+  background-repeat: no-repeat;
+  background-size: 100%;
   filter: saturate(0.8);
 }
 
