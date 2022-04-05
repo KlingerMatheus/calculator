@@ -4,7 +4,7 @@
       <small>{{ this.getExpression(expression) }}</small>
     </div>
     <div id="user-entry">
-      <p v-if="calculatorIsActive">{{ dataOnScreenIsZero() }}</p>
+      <p v-if="calculatorIsActive">{{ dataOnScreenIsEmpty() }}</p>
       <p v-else-if="!calculatorIsActive">OFF</p>
     </div>
   </div>
@@ -20,7 +20,7 @@ export default {
     dataOnScreen: String,
   },
   methods: {
-    dataOnScreenIsZero() {
+    dataOnScreenIsEmpty() {
       if (this.dataOnScreen == "") {
         return "0";
       } else {

@@ -2,7 +2,7 @@
   <div id="app">
     <div id="background"></div>
     <div id="page-title">
-      <h2>Welcome To The Jungle!</h2>
+      <h2>Klinger Matheus - Dev Front-End Jr.!</h2>
       <small>Se liga só nessa "simples" calculadora...</small>
     </div>
     <Calculator />
@@ -33,6 +33,10 @@ export default {
   font-family: "Roboto", sans-serif;
 }
 
+body {
+  background-color: #020126;
+}
+
 #background {
   position: absolute;
   left: 50%;
@@ -40,7 +44,6 @@ export default {
   height: 100%;
   z-index: -1;
   transform: translateX(-50%);
-  background-color: #020126;
   background-image: url("./assets/background.jpg");
   background-repeat: no-repeat;
   background-size: 100%;

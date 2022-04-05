@@ -42,7 +42,7 @@
           <tr>
             <td colspan="2" class="key" @click="addNumber('0')">0</td>
             <td class="key" @click="addSeparator()">.</td>
-            <td class="key key-equal" @click="equal()">=</td>
+            <td class="key" id="key-equal" @click="equal()">=</td>
           </tr>
         </table>
       </div>
@@ -71,7 +71,53 @@ export default {
       expression: [],
     };
   },
+  mounted() {
+    this.keyboardEvents();
+  },
   methods: {
+    keyboardEvents() {
+      document.addEventListener("keydown", (event) => {
+        const keyName = event.key;
+
+        switch (keyName) {
+          case " ": {
+            return this.calculatorOnOff();
+          }
+
+          case "Backspace": {
+            return this.backspace();
+          }
+
+          case "0":
+          case "1":
+          case "2":
+          case "3":
+          case "4":
+          case "5":
+          case "6":
+          case "7":
+          case "8":
+          case "9": {
+            return this.addNumber(keyName);
+          }
+
+          case "+":
+          case "-":
+          case "*":
+          case "/": {
+            return this.addOperators(keyName);
+          }
+
+          case "Enter": {
+            return this.equal();
+          }
+
+          case "Delete": {
+            return this.clearCalculator();
+          }
+        }
+      });
+    },
     getExpression(value) {
       let string = " ";
       let count = 0;
@@ -87,13 +133,6 @@ export default {
         return true;
       } else {
         return false;
-      }
-    },
-    dataOnScreenIsZero() {
-      if (this.dataOnScreen == "") {
-        return "0";
-      } else {
-        return this.dataOnScreen;
       }
     },
     addNumber(value) {
@@ -132,29 +171,31 @@ export default {
 
       if (expressionLength == 0) {
         this.expression.push(number, operator);
-        this.dataOnScreen = "";
       } else if (expressionLength == 3) {
-        this.expression = [];
         this.expression.push(number, operator);
-        this.dataOnScreen = "";
       } else {
         equalValue = this.calculate();
         asString = equalValue.toString();
 
         this.expression = [];
         this.expression.push(asString, operator);
-        this.dataOnScreen = "";
       }
+
+      this.dataOnScreen = "";
     },
     addOperators(operator) {
       let number = this.dataOnScreen;
 
-      if (number != "") {
-        this.addOnExpression(number, operator);
-        return;
+      if (this.calculatorIsActive) {
+        if (number != "") {
+          this.addOnExpression(number, operator);
+          return;
+        } else {
+          this.expression.splice(1, 1);
+          this.expression.push(operator);
+          return;
+        }
       } else {
-        this.expression.splice(1, 1);
-        this.expression.push(operator);
         return;
       }
     },
@@ -170,18 +211,29 @@ export default {
         }
       }
     },
-    numberParse(string) {
-      return parseFloat(string);
-    },
     equal() {
       let number = this.dataOnScreen;
+      const isDoubleEqual = this.isDoubleEqual();
 
-      this.expression.push(number);
-      this.dataOnScreen = this.calculate();
+      if (isDoubleEqual || this.dataOnScreen == "") {
+        return;
+      } else {
+        this.expression.push(number);
+        this.dataOnScreen = this.calculate();
+        this.expression.push("=");
+      }
+    },
+    isDoubleEqual() {
+      const expressionLength = this.expression.length;
+      if (this.expression[expressionLength - 1] == "=") {
+        return true;
+      } else {
+        return false;
+      }
     },
     calculate() {
-      let n1 = this.numberParse(this.expression[0]);
-      let n2 = this.numberParse(this.dataOnScreen);
+      let n1 = parseFloat(this.expression[0]);
+      let n2 = parseFloat(this.dataOnScreen);
       let operator = this.expression[1];
       let equal = Number;
 
@@ -203,6 +255,7 @@ export default {
             equal = n1 / n2;
           } else {
             alert("Impossível dividir por 0(Zero).");
+            this.clearAll();
             return;
           }
           break;
@@ -279,8 +332,12 @@ export default {
   box-shadow: inset 0px 0px 60px rgba(0, 0, 0, 0.3);
 }
 
-.key-equal {
+#key-equal {
   background-color: rgba(30, 120, 255, 0.75);
+}
+
+#key-on-off {
+  background-color: orangered;
 }
 
 /* METEORO */
@@ -409,14 +466,6 @@ export default {
   #notification {
     font-size: 11px;
     margin-top: -50px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  #notification {
-    position: static;
-    margin-top: -60px;
-    margin-bottom: 10px;
   }
 }
 </style>
